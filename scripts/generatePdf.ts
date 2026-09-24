@@ -16,7 +16,7 @@ async function generateCV() {
   const borderColor = rgb(0.88, 0.91, 0.94); // #e2e8f0
   const lightBlueBg = rgb(0.93, 0.96, 1.0); // #eff6ff
 
-  const portfolioUrl = 'https://ais-pre-qmyjbene2jnq2wnu3jpim6-791356707195.europe-west2.run.app';
+  const portfolioUrl = 'https://haithemprofile.netlify.app';
   const githubUrl = 'https://github.com/haithem-pro01';
   const linkedinUrl = 'https://www.linkedin.com/in/haithem-benzerga-a13b883b5';
   const emailUrl = 'mailto:haithembenzerga@gmail.com';

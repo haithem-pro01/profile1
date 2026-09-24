@@ -30,7 +30,7 @@ export const profileData: ProfileData = {
   },
   github: 'https://github.com/haithem-pro01',
   linkedin: 'https://www.linkedin.com/in/haithem-benzerga-a13b883b5/',
-  website: 'https://ais-pre-qmyjbene2jnq2wnu3jpim6-791356707195.europe-west2.run.app',
+  website: 'https://haithemprofile.netlify.app',
   cvPath: '/cv/Haithem-Ben-Zerga-CV.pdf',
   careerObjective: {
     en: 'I am developing my skills in software engineering and artificial intelligence while building practical applications and exploring new technologies.',
