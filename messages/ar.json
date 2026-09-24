@@ -1,0 +1,32 @@
+{
+  "profile": {
+    "name": "هيثم بن زرقة",
+    "role": "مطور ذكاء اصطناعي / مهندس برمجيات",
+    "academicHeadline": "طالب ماستر في الذكاء الاصطناعي · خريج إعلام آلي",
+    "bio": "أقوم ببناء تطبيقات برمجية حديثة، واستكشاف تقنيات الذكاء الاصطناعي، وتحويل الأفكار إلى حلول عملية وفعالة.",
+    "email": "haithembenzerga@gmail.com",
+    "phone": "0696980328",
+    "whatsapp": "0696980328",
+    "university": "جامعة أحمد دراية بأدرار، الجزائر",
+    "location": "أدرار، الجزائر",
+    "github": "https://github.com/haithem-pro01",
+    "linkedin": "https://www.linkedin.com/in/haithem-benzerga-a13b883b5/"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "about": "عني",
+    "projects": "المشاريع",
+    "skills": "المهارات",
+    "education": "التعليم",
+    "services": "الخدمات",
+    "contact": "تواصل معي",
+    "resume": "السيرة الذاتية"
+  },
+  "hero": {
+    "greeting": "مرحباً، أنا",
+    "viewProjects": "تصفح مشاريعي",
+    "downloadCV": "تحميل السيرة الذاتية",
+    "contactMe": "تواصل معي",
+    "motto": "ابنِ. تعلّم. حُلّ. ابتكر."
+  }
+}

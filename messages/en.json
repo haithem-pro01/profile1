@@ -1,0 +1,32 @@
+{
+  "profile": {
+    "name": "Haithem Benzerga",
+    "role": "AI Developer / Software Engineer",
+    "academicHeadline": "Master's Student in Artificial Intelligence · Computer Science Graduate",
+    "bio": "I build modern software applications, explore AI technologies, and turn ideas into practical solutions.",
+    "email": "haithembenzerga@gmail.com",
+    "phone": "0696980328",
+    "whatsapp": "0696980328",
+    "university": "Ahmed Draia University of Adrar, Algeria",
+    "location": "Adrar, Algeria",
+    "github": "https://github.com/haithem-pro01",
+    "linkedin": "https://www.linkedin.com/in/haithem-benzerga-a13b883b5/"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "skills": "Skills",
+    "education": "Education",
+    "services": "Services",
+    "contact": "Contact",
+    "resume": "Resume / CV"
+  },
+  "hero": {
+    "greeting": "Hello, I'm",
+    "viewProjects": "View My Projects",
+    "downloadCV": "Download CV",
+    "contactMe": "Contact Me",
+    "motto": "Build. Learn. Solve. Innovate."
+  }
+}

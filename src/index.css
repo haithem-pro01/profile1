@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-tajawal: 'Tajawal', 'Cairo', system-ui, sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-inter);
+  }
+
+  html[dir="rtl"] {
+    font-family: var(--font-tajawal);
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+}
+
+/* Subtle futuristic tech grid background */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+}
+
+.dark .bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(59, 130, 246, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.07) 1px, transparent 1px);
+}
+
+/* Glowing tech glow radial effects */
+.radial-glow {
+  background: radial-gradient(circle at 50% 30%, rgba(37, 99, 235, 0.12) 0%, rgba(37, 99, 235, 0) 70%);
+}
+
+.dark .radial-glow {
+  background: radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+}
+
+/* Custom sleek scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(96, 165, 250, 0.6);
+}
