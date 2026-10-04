@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Language, Theme } from '../types';
 import { translations } from '../data/translations';
-import { Moon, Sun, Menu, X, FileText, Globe, Download } from 'lucide-react';
+import { Moon, Sun, Menu, X, FileText, Globe, Download, ShieldCheck } from 'lucide-react';
 import { downloadCV, CV_DOWNLOAD_PATH } from '../utils/downloadCV';
 
 interface NavbarProps {
@@ -12,6 +12,7 @@ interface NavbarProps {
   onOpenCV: () => void;
   photoUrl?: string;
   onOpenPhoto?: () => void;
+  isOwner?: boolean;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -22,6 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenCV,
   photoUrl,
   onOpenPhoto,
+  isOwner = false,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const t = translations[lang];
@@ -119,6 +121,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </span>
           </button>
+
+          {/* Owner Mode Indicator (Only displayed if authenticated owner) */}
+          {isOwner && (
+            <button
+              type="button"
+              onClick={onOpenPhoto}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 shadow-2xs hover:bg-emerald-100 transition-colors cursor-pointer"
+              title={t.photo.ownerBadge}
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span className="hidden md:inline">{t.photo.ownerBadge}</span>
+            </button>
+          )}
 
           {/* Dark/Light Mode (Night / Morning) Switcher Box - Icons Only */}
           <div

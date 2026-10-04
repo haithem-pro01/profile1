@@ -2,7 +2,7 @@ import React from 'react';
 import { Language } from '../types';
 import { profileData, aboutData } from '../data/portfolioData';
 import { translations } from '../data/translations';
-import { GraduationCap, Code2, Brain, CheckCircle2, Terminal, ArrowRight, ArrowLeft, Download } from 'lucide-react';
+import { GraduationCap, Code2, Brain, CheckCircle2, Terminal, ArrowRight, ArrowLeft, Download, ShieldCheck } from 'lucide-react';
 import { downloadCV, CV_DOWNLOAD_PATH } from '../utils/downloadCV';
 
 interface AboutSectionProps {
@@ -10,6 +10,7 @@ interface AboutSectionProps {
   onOpenCV: () => void;
   photoUrl: string;
   onOpenPhoto: () => void;
+  isOwner?: boolean;
 }
 
 export const AboutSection: React.FC<AboutSectionProps> = ({
@@ -17,6 +18,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
   onOpenCV,
   photoUrl,
   onOpenPhoto,
+  isOwner = false,
 }) => {
   const t = translations[lang];
   const isRTL = lang === 'ar';
@@ -142,13 +144,20 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                 >
                   <span>{t.photo.viewPhoto}</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={onOpenPhoto}
-                  className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors flex items-center gap-1 cursor-pointer"
-                >
-                  <span>{t.photo.changePhoto}</span>
-                </button>
+                {isOwner ? (
+                  <button
+                    type="button"
+                    onClick={onOpenPhoto}
+                    className="text-emerald-600 dark:text-emerald-400 hover:underline transition-colors flex items-center gap-1 cursor-pointer font-medium"
+                  >
+                    <span>{t.photo.changePhoto}</span>
+                  </button>
+                ) : (
+                  <span className="text-slate-500 dark:text-slate-400 text-[11px] font-mono flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                    <span>{t.photo.verifiedBadge}</span>
+                  </span>
+                )}
               </div>
             </div>
 

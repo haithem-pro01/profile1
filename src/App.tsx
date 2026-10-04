@@ -39,12 +39,22 @@ export default function App() {
   const [isCVModalOpen, setIsCVModalOpen] = useState(false);
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
-  // Profile photo state management (with localStorage persistence and reset)
-  const { photoUrl, isCustom, uploadPhoto, resetPhoto } = useProfilePhoto();
+  // Profile photo state management (with owner authorization, localStorage persistence and reset)
+  const {
+    photoUrl,
+    isCustom,
+    isOwner,
+    loginOwner,
+    logoutOwner,
+    uploadPhoto,
+    resetPhoto,
+  } = useProfilePhoto();
   const [photoDropSuccess, setPhotoDropSuccess] = useState(false);
 
-  // Global drag-and-drop image listener: dropping any photo anywhere updates the profile picture instantly
+  // Drag-and-drop image listener: ONLY active for authenticated OWNER (disabled for visitors)
   useEffect(() => {
+    if (!isOwner) return;
+
     const handleDragOver = (e: DragEvent) => {
       e.preventDefault();
     };
@@ -69,7 +79,7 @@ export default function App() {
       window.removeEventListener('dragover', handleDragOver);
       window.removeEventListener('drop', handleDrop);
     };
-  }, [uploadPhoto]);
+  }, [isOwner, uploadPhoto]);
 
   // Sync RTL and lang attribute on <html> element
   useEffect(() => {
@@ -112,6 +122,7 @@ export default function App() {
         onOpenCV={() => setIsCVModalOpen(true)}
         photoUrl={photoUrl}
         onOpenPhoto={() => setIsPhotoModalOpen(true)}
+        isOwner={isOwner}
       />
 
       {/* Main Content Area */}
@@ -122,7 +133,8 @@ export default function App() {
           onOpenCV={() => setIsCVModalOpen(true)}
           photoUrl={photoUrl}
           onOpenPhoto={() => setIsPhotoModalOpen(true)}
-          onUploadPhoto={uploadPhoto}
+          isOwner={isOwner}
+          onUploadPhoto={isOwner ? uploadPhoto : undefined}
         />
 
         {/* 2. About Section: Strong Personal Identity */}
@@ -131,6 +143,7 @@ export default function App() {
           onOpenCV={() => setIsCVModalOpen(true)}
           photoUrl={photoUrl}
           onOpenPhoto={() => setIsPhotoModalOpen(true)}
+          isOwner={isOwner}
         />
 
         {/* 3. Featured Projects: Core Portfolio Showcase */}
@@ -167,13 +180,16 @@ export default function App() {
         onClose={() => setIsCVModalOpen(false)}
       />
 
-      {/* Profile Photo Lightbox & Upload Modal */}
+      {/* Profile Photo Lightbox & Management Modal */}
       <ProfilePhotoModal
         isOpen={isPhotoModalOpen}
         onClose={() => setIsPhotoModalOpen(false)}
         lang={lang}
         photoUrl={photoUrl}
         isCustom={isCustom}
+        isOwner={isOwner}
+        onLoginOwner={loginOwner}
+        onLogoutOwner={logoutOwner}
         onUploadPhoto={uploadPhoto}
         onResetPhoto={resetPhoto}
       />

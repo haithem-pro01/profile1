@@ -28,6 +28,7 @@ import {
   Camera,
   Maximize2,
   Upload,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface HeroProps {
@@ -35,6 +36,7 @@ interface HeroProps {
   onOpenCV: () => void;
   photoUrl: string;
   onOpenPhoto: () => void;
+  isOwner?: boolean;
   onUploadPhoto?: (file: File) => Promise<string>;
 }
 
@@ -43,6 +45,7 @@ export const Hero: React.FC<HeroProps> = ({
   onOpenCV,
   photoUrl,
   onOpenPhoto,
+  isOwner = false,
   onUploadPhoto,
 }) => {
   const [copiedText, setCopiedText] = useState<string | null>(null);
@@ -369,9 +372,10 @@ export const Hero: React.FC<HeroProps> = ({
                       <span>{t.photo.availableBadge}</span>
                     </div>
 
-                    {/* Floating Tech Badges */}
-                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-blue-950/80 backdrop-blur-md border border-blue-700/60 text-[10px] font-mono text-blue-300">
-                      &lt;AI / ML&gt;
+                    {/* Floating Tech / Verified Badges */}
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-slate-900/85 backdrop-blur-md border border-slate-700/80 text-[10px] font-medium text-cyan-300 flex items-center gap-1 shadow-sm">
+                      <ShieldCheck className="w-3 h-3 text-cyan-400" />
+                      <span>{isOwner ? t.photo.ownerBadge : t.photo.verifiedBadge}</span>
                     </div>
 
                     {/* Bottom Details & Quick Actions */}
@@ -392,7 +396,7 @@ export const Hero: React.FC<HeroProps> = ({
                           <span>{t.photo.viewPhoto}</span>
                         </button>
 
-                        {onUploadPhoto && (
+                        {isOwner && onUploadPhoto ? (
                           <button
                             type="button"
                             disabled={uploadLoading}
@@ -403,13 +407,22 @@ export const Hero: React.FC<HeroProps> = ({
                             <Upload className="w-3.5 h-3.5 text-cyan-400" />
                             <span>{uploadLoading ? '...' : t.photo.changePhoto}</span>
                           </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={onOpenCV}
+                            className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700 backdrop-blur-md border border-slate-700 transition-colors cursor-pointer shadow-sm"
+                          >
+                            <FileText className="w-3.5 h-3.5 text-blue-400" />
+                            <span>{t.hero.previewCV}</span>
+                          </button>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Hidden File Input */}
-                  {onUploadPhoto && (
+                  {/* Hidden File Input - STRICTLY OWNER ONLY */}
+                  {isOwner && onUploadPhoto && (
                     <input
                       ref={heroFileInputRef}
                       type="file"
