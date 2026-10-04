@@ -225,20 +225,20 @@ export const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ lang }) => {
         {/* Recruiter Transparency Banner */}
         <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-600 dark:text-slate-400">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+            <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
             <span>
               {lang === 'ar'
-                ? 'مشاريع تطبيقية موثوقة: صور المعاينة مهيأة في مسار /public/projects/ كعناصر نائبة واضحة لاستبدالها بلقطات الشاشة الفعلية.'
-                : 'Project screenshots are prepared in /public/projects/ as clean, honest placeholders ready to be replaced with live application assets.'}
+                ? 'مشاريع تطبيقية حقيقية: جميع الأكواد البرمجية منشورة ومفتوحة المصدر (Public) على حسابي في GitHub بترخيص عام وقابلة للمعاينة المباشرة.'
+                : 'Real engineering projects: All source code repositories are published as public open-source on GitHub ready for direct review.'}
             </span>
           </div>
           <a
-            href="https://github.com/haithem-pro01"
+            href="https://github.com/haithem-pro01?tab=repositories"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 font-semibold text-blue-600 dark:text-blue-400 hover:underline shrink-0"
           >
-            <span>github.com/haithem-pro01</span>
+            <span>{lang === 'ar' ? 'عرض جميع المستودعات على GitHub' : 'github.com/haithem-pro01'}</span>
             <ExternalLink className="w-3 h-3" />
           </a>
         </div>

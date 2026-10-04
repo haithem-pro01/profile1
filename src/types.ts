@@ -136,6 +136,7 @@ export interface ProfileData {
   linkedin: string;
   website: string;
   cvPath: string;
+  photoUrl: string;
   careerObjective: {
     en: string;
     ar: string;

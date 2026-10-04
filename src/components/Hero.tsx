@@ -25,18 +25,48 @@ import {
   Workflow,
   Server,
   Layers,
+  Camera,
+  Maximize2,
+  Upload,
 } from 'lucide-react';
 
 interface HeroProps {
   lang: Language;
   onOpenCV: () => void;
+  photoUrl: string;
+  onOpenPhoto: () => void;
+  onUploadPhoto?: (file: File) => Promise<string>;
 }
 
-export const Hero: React.FC<HeroProps> = ({ lang, onOpenCV }) => {
+export const Hero: React.FC<HeroProps> = ({
+  lang,
+  onOpenCV,
+  photoUrl,
+  onOpenPhoto,
+  onUploadPhoto,
+}) => {
   const [copiedText, setCopiedText] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<'profile' | 'architecture'>('profile');
+  const [activeCodeTab, setActiveCodeTab] = useState<'photo' | 'profile' | 'architecture'>('photo');
+  const [uploadLoading, setUploadLoading] = useState(false);
+  const heroFileInputRef = React.useRef<HTMLInputElement>(null);
   const t = translations[lang];
   const isRTL = lang === 'ar';
+
+  const handleHeroFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !onUploadPhoto) return;
+    try {
+      setUploadLoading(true);
+      await onUploadPhoto(file);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setUploadLoading(false);
+      if (heroFileInputRef.current) {
+        heroFileInputRef.current.value = '';
+      }
+    }
+  };
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -57,10 +87,37 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenCV }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Hero Copy & Clear CTA Hierarchy (7 Cols) */}
           <div className="lg:col-span-7 space-y-6">
-            {/* Greeting Tag */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-blue-800/80 shadow-2xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>{t.hero.greeting}</span>
+            {/* Greeting & Avatar Row */}
+            <div className="flex items-center gap-3.5">
+              <button
+                type="button"
+                id="hero-quick-avatar"
+                onClick={onOpenPhoto}
+                className="relative group shrink-0 rounded-2xl p-0.5 bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 shadow-md hover:shadow-lg transition-all cursor-pointer hover:scale-105"
+                title={t.photo.viewPhoto}
+              >
+                <img
+                  src={photoUrl}
+                  alt={profileData.name[lang]}
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border-2 border-white dark:border-slate-900 bg-slate-900"
+                  referrerPolicy="no-referrer"
+                />
+                <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full flex items-center justify-center shadow-xs">
+                  <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
+                </span>
+              </button>
+
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-blue-800/80 shadow-2xs">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>{t.hero.greeting}</span>
+                </div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                  <span className="font-semibold text-slate-700 dark:text-slate-300">{profileData.name[lang]}</span>
+                  <span>·</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-medium">{t.photo.availableBadge}</span>
+                </div>
+              </div>
             </div>
 
             {/* Main Name Heading */}
@@ -252,6 +309,18 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenCV }) => {
                 <div className="flex items-center gap-1 bg-slate-900 px-2 py-1 rounded-md border border-slate-800">
                   <button
                     type="button"
+                    onClick={() => setActiveCodeTab('photo')}
+                    className={`px-2 py-0.5 rounded text-[11px] font-mono flex items-center gap-1 transition-colors ${
+                      activeCodeTab === 'photo'
+                        ? 'bg-blue-600/30 text-blue-300 font-semibold border border-blue-500/40'
+                        : 'text-slate-400 hover:text-slate-200'
+                    }`}
+                  >
+                    <Camera className="w-3 h-3 text-cyan-400" />
+                    <span>haithem.jpg</span>
+                  </button>
+                  <button
+                    type="button"
                     onClick={() => setActiveCodeTab('profile')}
                     className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors ${
                       activeCodeTab === 'profile'
@@ -279,11 +348,88 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenCV }) => {
                 </span>
               </div>
 
-              {/* Code Panel Body */}
-              <div className="p-4 font-mono text-xs space-y-2 bg-slate-950/90 leading-relaxed overflow-x-auto">
-                {activeCodeTab === 'profile' ? (
+              {/* Code / Visual Panel Body */}
+              {activeCodeTab === 'photo' ? (
+                <div className="p-4 sm:p-5 bg-slate-950/95 space-y-4">
+                  {/* Photo Container */}
+                  <div className="relative group w-full aspect-square max-w-[300px] sm:max-w-[320px] mx-auto rounded-2xl overflow-hidden border-2 border-slate-700/80 shadow-2xl bg-slate-900">
+                    <img
+                      src={photoUrl}
+                      alt={profileData.name[lang]}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      referrerPolicy="no-referrer"
+                    />
+
+                    {/* Gradient Overlay & Badges */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-black/30 pointer-events-none" />
+
+                    {/* Top Status */}
+                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-900/85 backdrop-blur-md border border-slate-700/80 text-[11px] font-semibold text-emerald-400 flex items-center gap-1.5 shadow-sm">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>{t.photo.availableBadge}</span>
+                    </div>
+
+                    {/* Floating Tech Badges */}
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-blue-950/80 backdrop-blur-md border border-blue-700/60 text-[10px] font-mono text-blue-300">
+                      &lt;AI / ML&gt;
+                    </div>
+
+                    {/* Bottom Details & Quick Actions */}
+                    <div className="absolute inset-x-0 bottom-0 p-3.5 space-y-2">
+                      <div className="text-white">
+                        <p className="font-bold text-sm leading-tight">{profileData.name[lang]}</p>
+                        <p className="text-[11px] text-slate-300 font-mono">{profileData.title[lang]}</p>
+                      </div>
+
+                      {/* Interactive Buttons Bar */}
+                      <div className="flex items-center gap-2 pt-1">
+                        <button
+                          type="button"
+                          onClick={onOpenPhoto}
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-600/90 hover:bg-blue-600 backdrop-blur-md border border-blue-400/40 transition-colors cursor-pointer shadow-sm"
+                        >
+                          <Maximize2 className="w-3.5 h-3.5" />
+                          <span>{t.photo.viewPhoto}</span>
+                        </button>
+
+                        {onUploadPhoto && (
+                          <button
+                            type="button"
+                            disabled={uploadLoading}
+                            onClick={() => heroFileInputRef.current?.click()}
+                            className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-200 bg-slate-800/90 hover:bg-slate-700 backdrop-blur-md border border-slate-600/80 transition-colors cursor-pointer shadow-sm"
+                            title={t.photo.changePhoto}
+                          >
+                            <Upload className="w-3.5 h-3.5 text-cyan-400" />
+                            <span>{uploadLoading ? '...' : t.photo.changePhoto}</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Hidden File Input */}
+                  {onUploadPhoto && (
+                    <input
+                      ref={heroFileInputRef}
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp,image/jpg"
+                      className="hidden"
+                      onChange={handleHeroFileChange}
+                    />
+                  )}
+
+                  {/* Caption underneath */}
+                  <div className="text-center text-[11px] text-slate-400 flex items-center justify-center gap-2 font-mono">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                    <span>{profileData.location[lang]} · {profileData.university[lang]}</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-4 font-mono text-xs space-y-2 bg-slate-950/90 leading-relaxed overflow-x-auto">
+                  {activeCodeTab === 'profile' ? (
                   <div className="space-y-1 text-slate-300">
-                    <div className="text-slate-500"># Haitian Benzerga · System Definition</div>
+                    <div className="text-slate-500"># Haithem Benzerga · System Definition</div>
                     <div>
                       <span className="text-purple-400">class</span>{' '}
                       <span className="text-yellow-300">HaithemBenzerga</span>:
@@ -291,23 +437,26 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenCV }) => {
                     <div className="pl-4 space-y-0.5">
                       <div>
                         <span className="text-blue-400">role</span> ={' '}
-                        <span className="text-emerald-300">"AI Developer / SWE"</span>
+                        <span className="text-emerald-300">"AI Developer & Software Engineer"</span>
+                      </div>
+                      <div>
+                        <span className="text-blue-400">motto</span> ={' '}
+                        <span className="text-emerald-300">"أفكارك .. إلى حلول رقمية"</span>
                       </div>
                       <div>
                         <span className="text-blue-400">degree</span> ={' '}
                         <span className="text-emerald-300">"Master 1 in Artificial Intelligence"</span>
                       </div>
                       <div>
-                        <span className="text-blue-400">alma_mater</span> ={' '}
-                        <span className="text-emerald-300">"Ahmed Draia University of Adrar"</span>
+                        <span className="text-blue-400">tech_stack</span> = [
+                        <span className="text-cyan-300">"Python", "Flutter", "SQL", "Web", "AI/ML"</span>]
                       </div>
                       <div>
-                        <span className="text-blue-400">core_domains</span> = [
+                        <span className="text-blue-400">core_pillars</span> = [
                       </div>
                       <div className="pl-4 text-cyan-300">
-                        "Desktop (Python, SQLite)",<br />
-                        "Mobile (Flutter, Supabase)",<br />
-                        "AI & Machine Learning Systems"
+                        "تطوير التطبيقات والمواقع", "إدارة قواعد البيانات",<br />
+                        "الذكاء الاصطناعي", "حلول برمجية مخصصة"
                       </div>
                       <div>]</div>
                     </div>
@@ -316,7 +465,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenCV }) => {
                       <span className="text-yellow-300">build_software</span>(self):
                     </div>
                     <div className="pl-4 text-slate-400">
-                      return <span className="text-emerald-300">"Practical, maintainable software."</span>
+                      return <span className="text-emerald-300">"معاً نحو مشروعك القادم."</span>
                     </div>
                   </div>
                 ) : (
@@ -353,7 +502,8 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenCV }) => {
                     <div className="text-amber-300">&#125;</div>
                   </div>
                 )}
-              </div>
+                </div>
+              )}
 
               {/* Sub-panel: System Indicators & Software Architecture Badges */}
               <div className="p-4 bg-slate-900 border-t border-slate-800 space-y-3">

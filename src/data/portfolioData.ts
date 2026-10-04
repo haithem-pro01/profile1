@@ -14,8 +14,8 @@ export const profileData: ProfileData = {
     ar: 'طالب ماستر في الذكاء الاصطناعي · خريج إعلام آلي',
   },
   bio: {
-    en: 'I build modern software applications, explore artificial intelligence, and turn ideas into practical solutions.',
-    ar: 'أقوم ببناء تطبيقات برمجية حديثة، واستكشاف تقنيات الذكاء الاصطناعي، وتحويل الأفكار إلى حلول عملية وفعالة.',
+    en: 'Turning ideas into digital solutions. I develop applications & web platforms, manage databases, explore AI systems, and engineer tailored software solutions.',
+    ar: 'أفكارك .. إلى حلول رقمية. أعمل على تطوير التطبيقات والمواقع، إدارة قواعد البيانات، الذكاء الاصطناعي، وبناء حلول برمجية مخصصة.',
   },
   email: 'haithembenzerga@gmail.com',
   phone: '0696980328',
@@ -32,9 +32,10 @@ export const profileData: ProfileData = {
   linkedin: 'https://www.linkedin.com/in/haithem-benzerga-a13b883b5/',
   website: 'https://haithemprofile.netlify.app',
   cvPath: '/cv/Haithem-Ben-Zerga-CV.pdf',
+  photoUrl: '/haithem-photo.jpg',
   careerObjective: {
-    en: 'I am developing my skills in software engineering and artificial intelligence while building practical applications and exploring new technologies.',
-    ar: 'أعمل على تطوير مهاراتي في هندسة البرمجيات والذكاء الاصطناعي من خلال بناء تطبيقات عملية واستكشاف التقنيات الحديثة.',
+    en: 'Together towards your next project. Building practical software applications and intelligent systems that solve real problems.',
+    ar: 'معاً نحو مشروعك القادم. أعمل على بناء تطبيقات برمجية عملية ونظم ذكية مبتكرة تلبي متطلبات المستخدمين والمؤسسات.',
   },
 };
 
@@ -130,10 +131,10 @@ export const featuredProjects: Project[] = [
       en: 'Integrate in-app payment gateways, push notifications for booking confirmations, and AI-driven price recommendations.',
       ar: 'دمج بوابات الدفع الإلكتروني، وتنبيهات تأكيد الحجز، وتطبيق خوارزميات ذكية لاقتراح الأسعار المثالية.',
     },
-    githubUrl: 'https://github.com/haithem-pro01',
+    githubUrl: 'https://github.com/haithem-pro01?tab=repositories',
     demoUrl: undefined,
     screenshotPlaceholder: 'Replaceable screenshot placeholder (/public/projects/accommodation-platform.webp)',
-    isPlaceholderRepo: true,
+    isPlaceholderRepo: false,
   },
   {
     id: 'hospital-stock',
@@ -193,10 +194,10 @@ export const featuredProjects: Project[] = [
       en: 'Automated barcode scanner integration and exportable PDF audit reports for hospital administrative oversight.',
       ar: 'دعم القراءة المباشرة للباركود وتصدير تقارير الجرد الدورية بصيغة PDF للإدارة الطبية.',
     },
-    githubUrl: 'https://github.com/haithem-pro01',
+    githubUrl: 'https://github.com/haithem-pro01/hospital-managment',
     demoUrl: undefined,
     screenshotPlaceholder: 'Replaceable screenshot placeholder (/public/projects/hospital-stock-management.webp)',
-    isPlaceholderRepo: true,
+    isPlaceholderRepo: false,
   },
   {
     id: 'clinic-management',
@@ -256,10 +257,10 @@ export const featuredProjects: Project[] = [
       en: 'Automated SMS appointment reminders for patients and digital prescription template generation.',
       ar: 'إرسال تذكيرات المواعيد عبر الرسائل النصية، وإنشاء قوالب رقمية للوصفات الطبية للطباعة المباشرة.',
     },
-    githubUrl: 'https://github.com/haithem-pro01',
+    githubUrl: 'https://github.com/haithem-pro01/hospital-managment',
     demoUrl: undefined,
     screenshotPlaceholder: 'Replaceable screenshot placeholder (/public/projects/clinic-management.webp)',
-    isPlaceholderRepo: true,
+    isPlaceholderRepo: false,
   },
   {
     id: 'inventory-management',
@@ -319,10 +320,10 @@ export const featuredProjects: Project[] = [
       en: 'Exportable Excel spreadsheets and visual sales forecasting charts.',
       ar: 'تصدير البيانات إلى ملفات Excel وبناء رسوم بيانية تفاعلية لتحليل المبيعات.',
     },
-    githubUrl: 'https://github.com/haithem-pro01',
+    githubUrl: 'https://github.com/haithem-pro01/gestion-de-stock-',
     demoUrl: undefined,
     screenshotPlaceholder: 'Replaceable screenshot placeholder (/public/projects/inventory-management.webp)',
-    isPlaceholderRepo: true,
+    isPlaceholderRepo: false,
   },
   {
     id: 'archive-management',
@@ -382,10 +383,10 @@ export const featuredProjects: Project[] = [
       en: 'OCR scan integration to convert scanned document images into searchable text directly inside the application.',
       ar: 'دمج تقنيات التعرف البصري على الحروف (OCR) لتحويل صور الوثائق الممسوحة ضوئياً إلى نصوص قابلة للبحث المباشر.',
     },
-    githubUrl: 'https://github.com/haithem-pro01',
+    githubUrl: 'https://github.com/haithem-pro01?tab=repositories',
     demoUrl: undefined,
     screenshotPlaceholder: 'Replaceable screenshot placeholder (/public/projects/archive-management.webp)',
-    isPlaceholderRepo: true,
+    isPlaceholderRepo: false,
   },
 ];
 

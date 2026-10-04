@@ -8,9 +8,16 @@ import { downloadCV, CV_DOWNLOAD_PATH } from '../utils/downloadCV';
 interface AboutSectionProps {
   lang: Language;
   onOpenCV: () => void;
+  photoUrl: string;
+  onOpenPhoto: () => void;
 }
 
-export const AboutSection: React.FC<AboutSectionProps> = ({ lang, onOpenCV }) => {
+export const AboutSection: React.FC<AboutSectionProps> = ({
+  lang,
+  onOpenCV,
+  photoUrl,
+  onOpenPhoto,
+}) => {
   const t = translations[lang];
   const isRTL = lang === 'ar';
 
@@ -93,6 +100,58 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ lang, onOpenCV }) =>
 
           {/* Side Info Cards (4 Cols) */}
           <div className="lg:col-span-4 space-y-4">
+            {/* Haithem Benzerga Profile & Photo Card */}
+            <div className="p-5 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80 shadow-xs space-y-4">
+              <div className="flex items-center gap-4">
+                <button
+                  type="button"
+                  onClick={onOpenPhoto}
+                  className="relative group shrink-0 rounded-2xl p-0.5 bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 hover:scale-105 transition-transform cursor-pointer"
+                  title={t.photo.viewPhoto}
+                >
+                  <img
+                    src={photoUrl}
+                    alt={profileData.name[lang]}
+                    className="w-16 h-16 rounded-xl object-cover border-2 border-white dark:border-slate-900 bg-slate-900"
+                    referrerPolicy="no-referrer"
+                  />
+                  <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full flex items-center justify-center">
+                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
+                  </span>
+                </button>
+
+                <div className="space-y-1">
+                  <h3 className="font-bold text-base text-slate-900 dark:text-white leading-tight">
+                    {profileData.name[lang]}
+                  </h3>
+                  <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                    {profileData.title[lang]}
+                  </p>
+                  <span className="inline-flex items-center gap-1.5 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                    {t.photo.availableBadge}
+                  </span>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
+                <button
+                  type="button"
+                  onClick={onOpenPhoto}
+                  className="text-blue-600 dark:text-blue-400 hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+                >
+                  <span>{t.photo.viewPhoto}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={onOpenPhoto}
+                  className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors flex items-center gap-1 cursor-pointer"
+                >
+                  <span>{t.photo.changePhoto}</span>
+                </button>
+              </div>
+            </div>
+
             {/* Academic Snapshot Card */}
             <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-50/60 to-indigo-50/30 dark:from-slate-800/80 dark:to-slate-800/40 border border-blue-100 dark:border-slate-700/80 space-y-4">
               <div className="flex items-center gap-3">

@@ -10,6 +10,8 @@ interface NavbarProps {
   theme: Theme;
   onToggleTheme: () => void;
   onOpenCV: () => void;
+  photoUrl?: string;
+  onOpenPhoto?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -18,6 +20,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   theme,
   onToggleTheme,
   onOpenCV,
+  photoUrl,
+  onOpenPhoto,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const t = translations[lang];
@@ -41,9 +45,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           id="nav-brand-logo"
           className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-1"
         >
-          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform duration-200 font-bold tracking-tight">
-            <span className="text-lg">HB</span>
-            <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full"></span>
+          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform duration-200 overflow-hidden font-bold tracking-tight">
+            {photoUrl ? (
+              <img
+                src={photoUrl}
+                alt="Haithem Benzerga"
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <span className="text-lg">HB</span>
+            )}
+            <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full z-10"></span>
           </div>
           <div className="flex flex-col">
             <span className="text-base font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
@@ -107,20 +120,49 @@ export const Navbar: React.FC<NavbarProps> = ({
             </span>
           </button>
 
-          {/* Dark/Light Mode Switcher */}
-          <button
-            type="button"
-            id="nav-theme-toggle"
-            onClick={onToggleTheme}
-            aria-label="Toggle theme"
-            className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
+          {/* Dark/Light Mode (Night / Morning) Switcher Box - Icons Only */}
+          <div
+            id="theme-switch-box"
+            className="flex items-center p-0.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 shadow-xs"
+            role="group"
+            aria-label="Theme"
           >
-            {theme === 'dark' ? (
-              <Sun className="w-4 h-4 text-amber-400" />
-            ) : (
-              <Moon className="w-4 h-4 text-slate-700" />
-            )}
-          </button>
+            {/* Morning / Light Mode (Sun Icon Only) */}
+            <button
+              type="button"
+              id="theme-toggle-light"
+              onClick={() => {
+                if (theme !== 'light') onToggleTheme();
+              }}
+              title={t.nav.lightMode}
+              aria-label={t.nav.lightMode}
+              className={`p-1.5 rounded-lg transition-all duration-200 cursor-pointer ${
+                theme === 'light'
+                  ? 'bg-white text-amber-500 shadow-xs border border-amber-200/60'
+                  : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
+              }`}
+            >
+              <Sun className={`w-4 h-4 transition-transform duration-200 ${theme === 'light' ? 'rotate-12 text-amber-500' : ''}`} />
+            </button>
+
+            {/* Night / Dark Mode (Moon Icon Only) */}
+            <button
+              type="button"
+              id="theme-toggle-dark"
+              onClick={() => {
+                if (theme !== 'dark') onToggleTheme();
+              }}
+              title={t.nav.darkMode}
+              aria-label={t.nav.darkMode}
+              className={`p-1.5 rounded-lg transition-all duration-200 cursor-pointer ${
+                theme === 'dark'
+                  ? 'bg-slate-900 text-blue-400 shadow-xs border border-blue-500/30'
+                  : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
+              }`}
+            >
+              <Moon className={`w-4 h-4 transition-transform duration-200 ${theme === 'dark' ? '-rotate-12 text-blue-400' : ''}`} />
+            </button>
+          </div>
 
           {/* Mobile Menu Hamburger Button */}
           <button
@@ -149,6 +191,48 @@ export const Navbar: React.FC<NavbarProps> = ({
             </a>
           ))}
           <div className="pt-2 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+            {/* Mobile Theme Switcher Row - Icons Only */}
+            <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80">
+              <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                {t.nav.themeLabel}
+              </span>
+              <div className="flex items-center p-1 rounded-xl bg-slate-200/80 dark:bg-slate-900 border border-slate-300/60 dark:border-slate-700/60">
+                {/* Morning Mode Icon */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (theme !== 'light') onToggleTheme();
+                  }}
+                  title={t.nav.lightMode}
+                  aria-label={t.nav.lightMode}
+                  className={`p-2 rounded-lg transition-all ${
+                    theme === 'light'
+                      ? 'bg-white text-amber-500 shadow-xs'
+                      : 'text-slate-400 dark:text-slate-500'
+                  }`}
+                >
+                  <Sun className={`w-4 h-4 ${theme === 'light' ? 'rotate-12 text-amber-500' : ''}`} />
+                </button>
+
+                {/* Night Mode Icon */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (theme !== 'dark') onToggleTheme();
+                  }}
+                  title={t.nav.darkMode}
+                  aria-label={t.nav.darkMode}
+                  className={`p-2 rounded-lg transition-all ${
+                    theme === 'dark'
+                      ? 'bg-slate-800 text-blue-400 shadow-xs'
+                      : 'text-slate-400 dark:text-slate-500'
+                  }`}
+                >
+                  <Moon className={`w-4 h-4 ${theme === 'dark' ? '-rotate-12 text-blue-400' : ''}`} />
+                </button>
+              </div>
+            </div>
+
             <button
               type="button"
               onClick={() => {

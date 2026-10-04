@@ -1,16 +1,18 @@
 import React from 'react';
-import { Language } from '../types';
+import { Language, Theme } from '../types';
 import { profileData } from '../data/portfolioData';
 import { translations } from '../data/translations';
-import { Github, Linkedin, Mail, MessageCircle, Heart, ArrowUp, Download } from 'lucide-react';
+import { Github, Linkedin, Mail, MessageCircle, Heart, ArrowUp, Download, Sun, Moon } from 'lucide-react';
 import { downloadCV, CV_DOWNLOAD_PATH } from '../utils/downloadCV';
 
 interface FooterProps {
   lang: Language;
   onToggleLang: () => void;
+  theme?: Theme;
+  onToggleTheme?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ lang, onToggleLang }) => {
+export const Footer: React.FC<FooterProps> = ({ lang, onToggleLang, theme, onToggleTheme }) => {
   const t = translations[lang];
 
   const scrollToTop = () => {
@@ -107,6 +109,22 @@ export const Footer: React.FC<FooterProps> = ({ lang, onToggleLang }) => {
             </a>
 
             <div className="h-4 w-px bg-slate-200 dark:bg-slate-800 mx-1" />
+
+            {onToggleTheme && theme && (
+              <button
+                type="button"
+                onClick={onToggleTheme}
+                className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
+                title={theme === 'dark' ? t.nav.lightMode : t.nav.darkMode}
+                aria-label={theme === 'dark' ? t.nav.lightMode : t.nav.darkMode}
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-4 h-4 text-amber-400" />
+                ) : (
+                  <Moon className="w-4 h-4 text-slate-700" />
+                )}
+              </button>
+            )}
 
             <button
               type="button"

@@ -16,6 +16,8 @@ import { ServicesSection } from './components/ServicesSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { CVModal } from './components/CVModal';
+import { ProfilePhotoModal } from './components/ProfilePhotoModal';
+import { useProfilePhoto } from './utils/useProfilePhoto';
 
 export default function App() {
   // Default language is English as requested
@@ -28,10 +30,46 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>(() => {
     const saved = localStorage.getItem('hb_portfolio_theme');
     if (saved === 'dark' || saved === 'light') return saved;
+    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
     return 'light';
   });
 
   const [isCVModalOpen, setIsCVModalOpen] = useState(false);
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+
+  // Profile photo state management (with localStorage persistence and reset)
+  const { photoUrl, isCustom, uploadPhoto, resetPhoto } = useProfilePhoto();
+  const [photoDropSuccess, setPhotoDropSuccess] = useState(false);
+
+  // Global drag-and-drop image listener: dropping any photo anywhere updates the profile picture instantly
+  useEffect(() => {
+    const handleDragOver = (e: DragEvent) => {
+      e.preventDefault();
+    };
+    const handleDrop = (e: DragEvent) => {
+      e.preventDefault();
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) {
+        const file = files[0];
+        if (file.type.startsWith('image/')) {
+          uploadPhoto(file)
+            .then(() => {
+              setPhotoDropSuccess(true);
+              setTimeout(() => setPhotoDropSuccess(false), 4000);
+            })
+            .catch(console.error);
+        }
+      }
+    };
+    window.addEventListener('dragover', handleDragOver);
+    window.addEventListener('drop', handleDrop);
+    return () => {
+      window.removeEventListener('dragover', handleDragOver);
+      window.removeEventListener('drop', handleDrop);
+    };
+  }, [uploadPhoto]);
 
   // Sync RTL and lang attribute on <html> element
   useEffect(() => {
@@ -40,12 +78,14 @@ export default function App() {
     localStorage.setItem('hb_portfolio_lang', lang);
   }, [lang]);
 
-  // Sync dark class on <html> element
+  // Sync dark class and color-scheme on <html> element
   useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
     } else {
       document.documentElement.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
     }
     localStorage.setItem('hb_portfolio_theme', theme);
   }, [theme]);
@@ -70,15 +110,28 @@ export default function App() {
         theme={theme}
         onToggleTheme={toggleTheme}
         onOpenCV={() => setIsCVModalOpen(true)}
+        photoUrl={photoUrl}
+        onOpenPhoto={() => setIsPhotoModalOpen(true)}
       />
 
       {/* Main Content Area */}
       <main className="flex-1">
         {/* 1. Hero Section */}
-        <Hero lang={lang} onOpenCV={() => setIsCVModalOpen(true)} />
+        <Hero
+          lang={lang}
+          onOpenCV={() => setIsCVModalOpen(true)}
+          photoUrl={photoUrl}
+          onOpenPhoto={() => setIsPhotoModalOpen(true)}
+          onUploadPhoto={uploadPhoto}
+        />
 
         {/* 2. About Section: Strong Personal Identity */}
-        <AboutSection lang={lang} onOpenCV={() => setIsCVModalOpen(true)} />
+        <AboutSection
+          lang={lang}
+          onOpenCV={() => setIsCVModalOpen(true)}
+          photoUrl={photoUrl}
+          onOpenPhoto={() => setIsPhotoModalOpen(true)}
+        />
 
         {/* 3. Featured Projects: Core Portfolio Showcase */}
         <FeaturedProjects lang={lang} />
@@ -100,13 +153,29 @@ export default function App() {
       </main>
 
       {/* Site Footer */}
-      <Footer lang={lang} onToggleLang={toggleLanguage} />
+      <Footer
+        lang={lang}
+        onToggleLang={toggleLanguage}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
 
       {/* Curriculum Vitae Modal with direct PDF link */}
       <CVModal
         isOpen={isCVModalOpen}
         lang={lang}
         onClose={() => setIsCVModalOpen(false)}
+      />
+
+      {/* Profile Photo Lightbox & Upload Modal */}
+      <ProfilePhotoModal
+        isOpen={isPhotoModalOpen}
+        onClose={() => setIsPhotoModalOpen(false)}
+        lang={lang}
+        photoUrl={photoUrl}
+        isCustom={isCustom}
+        onUploadPhoto={uploadPhoto}
+        onResetPhoto={resetPhoto}
       />
     </div>
   );

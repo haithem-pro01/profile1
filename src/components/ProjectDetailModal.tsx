@@ -182,11 +182,32 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
           </div>
         )}
 
-        {/* Replaceable Repository Notice */}
-        <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 text-xs text-amber-800 dark:text-amber-300 flex items-start gap-2">
-          <Info className="w-4 h-4 shrink-0 mt-0.5" />
-          <span>{t.projects.placeholderRepoNotice}</span>
-        </div>
+        {/* Repository Status Badge */}
+        {project.isPlaceholderRepo ? (
+          <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 text-xs text-amber-800 dark:text-amber-300 flex items-start gap-2">
+            <Info className="w-4 h-4 shrink-0 mt-0.5" />
+            <span>{t.projects.placeholderRepoNotice}</span>
+          </div>
+        ) : (
+          <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-xs text-emerald-800 dark:text-emerald-300 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <span className="font-medium">
+                {lang === 'ar'
+                  ? 'مستودع الكود متاح ومفتوح المصدر (Public) على GitHub'
+                  : 'Public Open-Source Repository Available on GitHub'}
+              </span>
+            </div>
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold underline hover:text-emerald-950 dark:hover:text-emerald-200 shrink-0"
+            >
+              {lang === 'ar' ? 'عرض الكود ←' : 'Browse Code →'}
+            </a>
+          </div>
+        )}
 
         {/* Modal Action Buttons */}
         <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
